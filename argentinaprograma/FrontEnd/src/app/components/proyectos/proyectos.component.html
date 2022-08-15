@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <h1>Proyectos</h1>
+    <div class="row" *ngFor = "let pro of proyectos">
+        <div class="col-4">
+            <h4>{{pro.nombre}}</h4>
+            <h5>{{pro.descripcion}}</h5>
+            <h6>{{pro.fecha}}</h6>
+        </div>
+        <div class="col-1">
+            <a href="{{pro.link}}"><button type="button" class="btn btn-success" id="boton">Link</button></a>
+        </div>
+        <hr>
+    </div>
+</div>

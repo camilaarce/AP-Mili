@@ -1,0 +1,15 @@
+.container-fluid{
+    width: auto;
+    overflow: hidden;
+    border-radius: 15px;
+    border: rgb(148, 148, 148) 1px solid;
+    margin: 0px 10px 0px 10px;
+}
+
+#logo {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+}
+

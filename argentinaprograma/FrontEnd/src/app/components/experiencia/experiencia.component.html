@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <h1>Experiencia</h1>
+        <div class="row"  *ngFor = "let exp of experiencias">
+            <div class="col-1">
+                <img src="../../../assets/perfil.jpeg" id="logo">
+            </div>
+            <div class="col-6">
+                <h4>{{exp.titulo}}</h4>
+                <h5>{{exp.nombreEmpresa}}</h5>
+                <h6>{{exp.periodo}}</h6>
+                <h6>{{exp.descripcion}}</h6>
+            </div>
+            <hr>
+        </div>
+    <h1>Educación</h1>
+        <div class="row"  *ngFor = "let edu of educacion">
+            <div class="col-1">
+                <img src="../../../assets/perfil.jpeg" id="logo">
+            </div>
+            <div class="col-6">
+                <h4>{{edu.institucion}}</h4>
+                <h5>{{edu.titulo}}</h5>
+                <h6>{{edu.periodo}}</h6>
+            </div>
+            <hr>
+        </div>
+</div>

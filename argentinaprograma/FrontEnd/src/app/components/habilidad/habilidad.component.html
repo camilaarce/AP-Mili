@@ -1,0 +1,17 @@
+<div>
+    <h5> {{hab[0]}} </h5>
+    <!--<div role="progressbar" aria-valuemin="0" aria-valuemax="100" style="--value:{{hab[1]}}"></div>-->
+    <circle-progress
+        [percent]="80"
+        [radius]="100"
+        [titleFontSize]="'50px'"
+        [unitsFontSize]="'50px'"
+        [showSubtitle]="false"
+        [outerStrokeWidth]="16"
+        [innerStrokeWidth]="8"
+        [outerStrokeColor]="'#78C000'"
+        [innerStrokeColor]="'#C7E596'"
+        [animation]="true"
+        [animationDuration]="300"
+    ></circle-progress>
+</div>
