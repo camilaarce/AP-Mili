@@ -34,10 +34,11 @@ public class Rol {
         this.rolNombre = rolNombre;
     }
 
+    public Rol() {
+    }
+    
     public Rol(RolNombre rolNombre) {
         this.rolNombre = rolNombre;
     }
 
-    public Rol() {
-    }
 }
