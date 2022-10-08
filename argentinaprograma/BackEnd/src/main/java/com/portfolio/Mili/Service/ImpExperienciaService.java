@@ -41,4 +41,13 @@ public class ImpExperienciaService {
      public boolean existsByEmpleado(String empleado){
          return iexperienciaRepository.existsByEmpleado(empleado);
      }
+
+    public void saveExperiencia(Experiencia experiencia) {
+        iexperienciaRepository.save(experiencia);
+    }
+    
+    public Experiencia findExperiencia(int id) {
+        Experiencia experiencia = iexperienciaRepository.findById(id).orElse(null);
+        return experiencia;
+    }
 }

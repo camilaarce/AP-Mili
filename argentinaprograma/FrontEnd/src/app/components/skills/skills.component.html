@@ -1,24 +1,35 @@
 <div class="container-fluid">
-    <h1>Hard & Soft Skills</h1>
+    <br>
     <div class="row">
-        <div class="col-3" *ngFor = "let habilidad of habilidades">
+        <div class="col-4">
+            <h1>Hard & Soft Skills</h1>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-secondary"><i class="bi bi-plus-square"></i></button>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-4" *ngFor="let habilidad of habilidades">
+            <div class="row">
+                <div class="col">
+                    <h5> {{habilidad[0]}} </h5>
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary"><i class="bi bi-pencil-square"></i></button>
+                </div>
+            </div>
+                    
+            <div class="row">
+                <circle-progress [percent]='+"{{habilidad[1]}}"' title="{{+habilidad[1]}}" [radius]=100
+                [titleFontSize]="'50px'" [unitsFontSize]="'50px'" [showSubtitle]="false" [outerStrokeWidth]="16"
+                [innerStrokeWidth]="8" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'" [animation]="true"
+                [animationDuration]="1000"></circle-progress>
+            </div>
+
+            <!--<div role="progressbar" aria-valuemin="0" aria-valuemax="100" style="--value:{{hab[1]}}"></div>-->
             
-            <h5> {{habilidad[0]}} </h5>
-    <!--<div role="progressbar" aria-valuemin="0" aria-valuemax="100" style="--value:{{hab[1]}}"></div>-->
-    <circle-progress
-        [percent]="90"
-        title="{{+habilidad[1]}}"
-        [radius]="100"
-        [titleFontSize]="'50px'"
-        [unitsFontSize]="'50px'"
-        [showSubtitle]="false"
-        [outerStrokeWidth]="16"
-        [innerStrokeWidth]="8"
-        [outerStrokeColor]="'#78C000'"
-        [innerStrokeColor]="'#C7E596'"
-        [animation]="true"
-        [animationDuration]="1000"
-    ></circle-progress>
         </div>
     </div>
 </div>

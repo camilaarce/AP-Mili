@@ -15,4 +15,6 @@ public interface IPersonaService {
     
     //buscar persona
     public Persona findPersona(Long id);
+
+    public Object getOne(int id);
 }

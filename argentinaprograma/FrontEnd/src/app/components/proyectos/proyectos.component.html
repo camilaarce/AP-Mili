@@ -1,5 +1,14 @@
 <div class="container-fluid">
-    <h1>Proyectos</h1>
+    <br>
+    <div class="row">
+        <div class="col-2">
+            <h1>Proyectos</h1>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-secondary" ><i class="bi bi-plus-square"></i></button>
+        </div>
+        
+    </div>
     <div class="row" *ngFor = "let pro of proyectos">
         <div class="col-4">
             <h4>{{pro.nombre}}</h4>
@@ -8,6 +17,9 @@
         </div>
         <div class="col-1">
             <a href="{{pro.link}}"><button type="button" class="btn btn-success" id="boton">Link</button></a>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-secondary"><i class="bi bi-pencil-square"></i></button>
         </div>
         <hr>
     </div>

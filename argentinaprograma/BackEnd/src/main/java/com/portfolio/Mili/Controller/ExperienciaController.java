@@ -1,11 +1,12 @@
 package com.portfolio.Mili.Controller;
 
-import com.portfolio.Mili.Dto.dtoExperiencia;
+import com.google.gson.Gson;
 import com.portfolio.Mili.Entity.Experiencia;
 import com.portfolio.Mili.Security.Controller.Mensaje;
 import com.portfolio.Mili.Service.ImpExperienciaService;
+import java.io.IOException;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,24 +16,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/experiencia")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ExperienciaController {
     @Autowired
     ImpExperienciaService iexperienciaService;
     
-    @GetMapping("/lista")
+    @GetMapping("/experiencia/lista")
     public ResponseEntity<List<Experiencia>> list(){
         List<Experiencia> list = iexperienciaService.list();
         return new ResponseEntity(list, HttpStatus.OK);
     }
     
-    @GetMapping("/detail/{id}")
+    @GetMapping("/experiencia/detail/{id}")
     public ResponseEntity<Experiencia> getById(@PathVariable("id") int id){
         if(!iexperienciaService.existsById(id))
             return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
@@ -40,7 +40,7 @@ public class ExperienciaController {
         return new ResponseEntity(experiencia, HttpStatus.OK);
     }
     
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/experiencia/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
         if (!iexperienciaService.existsById(id)) {
             return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
@@ -50,39 +50,59 @@ public class ExperienciaController {
     }
 
     
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody dtoExperiencia dtoexp){      
-        if(StringUtils.isBlank(dtoexp.getEmpleado()))
-            return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
-        if(iexperienciaService.existsByEmpleado(dtoexp.getEmpleado()))
-            return new ResponseEntity(new Mensaje("Esa experiencia existe"), HttpStatus.BAD_REQUEST);
+    @PostMapping("/experiencia/create")
+    public ResponseEntity<?> create(@RequestParam("expNueva") String strExperiencia, @RequestParam("fichero") MultipartFile multipartFile) throws IOException{      
         
-        Experiencia experiencia = new Experiencia(dtoexp.getEmpleado(), dtoexp.getEmpresa(), dtoexp.getPeriodo(), dtoexp.getDescripcion());
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        //Establecemos el directorio donde se subiran nuestros ficheros  
+        String uploadDir = "photos";
+         
+        Gson gson = new Gson();
+        Experiencia exp = gson.fromJson(strExperiencia, Experiencia.class);
+        
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        Experiencia experiencia = new Experiencia(exp.getEmpleado(), exp.getEmpresa(), exp.getPeriodo(), exp.getDescripcion(), fileName);
         iexperienciaService.save(experiencia);
         
         return new ResponseEntity(new Mensaje("Experiencia agregada"), HttpStatus.OK);
     }
     
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody dtoExperiencia dtoexp){
-        //Validamos si existe el ID
-        if(!iexperienciaService.existsById(id))
-            return new ResponseEntity(new Mensaje("El ID no existe"), HttpStatus.BAD_REQUEST);
-        //Compara nombre de experiencias
-        if(iexperienciaService.existsByEmpleado(dtoexp.getEmpleado()) && iexperienciaService.getByEmpleado(dtoexp.getEmpleado()).get().getId() != id)
-            return new ResponseEntity(new Mensaje("Esa experiencia ya existe"), HttpStatus.BAD_REQUEST);
-        //No puede estar vacio
-        if(StringUtils.isBlank(dtoexp.getEmpleado()))
-            return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+    
+    @PutMapping("/experiencia/update/{id}")
+    public void update(@PathVariable("id") int id,@RequestParam("expEditar") String strExperiencia, @RequestParam("fichero") MultipartFile multipartFile) throws IOException{
         
-        Experiencia experiencia = iexperienciaService.getOne(id).get();
-        experiencia.setEmpleado(dtoexp.getEmpleado());
-        experiencia.setEmpresa((dtoexp.getEmpresa()));
-        experiencia.setPeriodo((dtoexp.getPeriodo()));
-        experiencia.setDescripcion((dtoexp.getDescripcion()));
+        Experiencia exp = iexperienciaService.getOne(id).get();
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        //Establecemos el directorio donde se subiran nuestros ficheros  
+        String uploadDir = "photos";
+         
+        System.out.println(id + strExperiencia);
+        Gson gson = new Gson();
+        Experiencia experiencia = gson.fromJson(strExperiencia, Experiencia.class);
+        //Obtenemos la propiedades del usuario
+         
+        //Establacecemos la imagen
+        exp.setImg(fileName);
+        System.out.println(experiencia.getImg());
+         
+        //Guardamos la imagen
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+    
+        exp.setEmpleado(experiencia.getEmpleado());
+        exp.setEmpresa(experiencia.getEmpresa());
+        exp.setPeriodo(experiencia.getPeriodo());
+        exp.setDescripcion(experiencia.getDescripcion());
         
-        iexperienciaService.save(experiencia);
-        return new ResponseEntity(new Mensaje("Experiencia actualizada"), HttpStatus.OK);
-             
+        System.out.println(exp.getId());
+        System.out.println(exp.getEmpleado());
+        System.out.println(exp.getEmpresa());
+        System.out.println(exp.getDescripcion());
+        System.out.println(exp.getPeriodo());
+        iexperienciaService.saveExperiencia(exp);
+    }
+    
+    @GetMapping("/experiencia/traer/{id}")
+    public Experiencia findExperiencia(@PathVariable("id") int id){
+        return iexperienciaService.findExperiencia(id);
     }
 }

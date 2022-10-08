@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SkillsComponent implements OnInit {
 
-  habilidades: any[] = [['HTML', '50'], ['CSS', '30'], ['JavaScript', '90']];
+  habilidades = [['HTML', 50], ['CSS', 30], ['JavaScript', 90]];
   
   constructor() { 
     

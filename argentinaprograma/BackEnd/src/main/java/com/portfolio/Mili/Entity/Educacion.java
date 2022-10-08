@@ -6,26 +6,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Experiencia {
+public class Educacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String empleado;
-    private String empresa;
+    private String titulo;
+    private String institucion;
     private String periodo;
-    private String descripcion;
     private String img;
     
     //Constructores
 
-    public Experiencia() {
+    public Educacion() {
     }
 
-    public Experiencia(String empleado, String empresa, String periodo, String descripcion, String img) {
-        this.empleado = empleado;
-        this.empresa = empresa;
+    public Educacion(String titulo, String institucion, String periodo, String img) {
+        this.titulo = titulo;
+        this.institucion = institucion;
         this.periodo = periodo;
-        this.descripcion = descripcion;
         this.img = img;
     }
 
@@ -37,20 +35,20 @@ public class Experiencia {
         this.id = id;
     }
 
-    public String getEmpleado() {
-        return empleado;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setEmpleado(String empleado) {
-        this.empleado = empleado;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public String getEmpresa() {
-        return empresa;
+    public String getInstitucion() {
+        return institucion;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    public void setInstitucion(String institucion) {
+        this.institucion = institucion;
     }
 
     public String getPeriodo() {
@@ -59,14 +57,6 @@ public class Experiencia {
 
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
     
     public String getImg() {
