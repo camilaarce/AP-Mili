@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DatosPersonalesComponent } from './components/datos-personales/datos-personales.component';
 import { ExperienciaComponent } from './components/experiencia/experiencia.component';
-import { HabilidadComponent } from './components/habilidad/habilidad.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { SkillsComponent } from './components/skills/skills.component';
@@ -25,7 +24,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HeaderComponent,
     DatosPersonalesComponent,
     ExperienciaComponent,
-    HabilidadComponent,
     SkillsComponent,
     ProyectosComponent,
     HomeComponent,
@@ -36,7 +34,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgCircleProgressModule.forRoot({}),
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
     HttpClientModule,
     FormsModule,
     NgbModule,
