@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://frontendmili.web.app")
 public class ExperienciaController {
     @Autowired
     ImpExperienciaService iexperienciaService;
@@ -51,17 +52,9 @@ public class ExperienciaController {
 
     
     @PostMapping("/experiencia/create")
-    public ResponseEntity<?> create(@RequestParam("expNueva") String strExperiencia, @RequestParam("fichero") MultipartFile multipartFile) throws IOException{      
+    public ResponseEntity<?> create(@RequestBody Experiencia exp) throws IOException{      
         
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        //Establecemos el directorio donde se subiran nuestros ficheros  
-        String uploadDir = "photos";
-         
-        Gson gson = new Gson();
-        Experiencia exp = gson.fromJson(strExperiencia, Experiencia.class);
-        
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        Experiencia experiencia = new Experiencia(exp.getEmpleado(), exp.getEmpresa(), exp.getPeriodo(), exp.getDescripcion(), fileName);
+        Experiencia experiencia = new Experiencia(exp.getEmpleado(), exp.getEmpresa(), exp.getPeriodo(), exp.getDescripcion(), exp.getImg());
         iexperienciaService.save(experiencia);
         
         return new ResponseEntity(new Mensaje("Experiencia agregada"), HttpStatus.OK);
@@ -69,35 +62,16 @@ public class ExperienciaController {
     
     
     @PutMapping("/experiencia/update/{id}")
-    public void update(@PathVariable("id") int id,@RequestParam("expEditar") String strExperiencia, @RequestParam("fichero") MultipartFile multipartFile) throws IOException{
+    public void update(@PathVariable("id") int id,@RequestBody Experiencia experiencia) throws IOException{
         
         Experiencia exp = iexperienciaService.getOne(id).get();
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        //Establecemos el directorio donde se subiran nuestros ficheros  
-        String uploadDir = "photos";
-         
-        System.out.println(id + strExperiencia);
-        Gson gson = new Gson();
-        Experiencia experiencia = gson.fromJson(strExperiencia, Experiencia.class);
-        //Obtenemos la propiedades del usuario
-         
-        //Establacecemos la imagen
-        exp.setImg(fileName);
-        System.out.println(experiencia.getImg());
-         
-        //Guardamos la imagen
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-    
+        
         exp.setEmpleado(experiencia.getEmpleado());
         exp.setEmpresa(experiencia.getEmpresa());
         exp.setPeriodo(experiencia.getPeriodo());
         exp.setDescripcion(experiencia.getDescripcion());
+        exp.setImg(experiencia.getImg());
         
-        System.out.println(exp.getId());
-        System.out.println(exp.getEmpleado());
-        System.out.println(exp.getEmpresa());
-        System.out.println(exp.getDescripcion());
-        System.out.println(exp.getPeriodo());
         iexperienciaService.saveExperiencia(exp);
     }
     

@@ -7,7 +7,7 @@ import { Experiencia } from '../model/experiencia';
   providedIn: 'root'
 })
 export class ExperienciaService {
-  expURL = 'http://localhost:8080/experiencia/';
+  expURL = ' https://backendmili.herokuapp.com/experiencia/';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,11 +19,11 @@ export class ExperienciaService {
     return this.httpClient.get<Experiencia>(this.expURL + `detail/${id}`);
   } 
 
-  public save(experiencia: FormData): Observable<any>{
+  public save(experiencia: Experiencia): Observable<any>{
     return this.httpClient.post<any>(this.expURL + 'create', experiencia);
   }
 
-  public update(id: number, experiencia: FormData): Observable<any>{
+  public update(id: number, experiencia: Experiencia): Observable<any>{
     return this.httpClient.put<any>(this.expURL + `update/${id}`, experiencia);
   }
 

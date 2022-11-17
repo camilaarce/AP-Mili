@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://frontendmili.web.app")
 public class SkillController {
     @Autowired
     ImpSkillService iskillService;
@@ -57,6 +57,8 @@ public class SkillController {
         
         Gson gson = new Gson();
         Skill sk = gson.fromJson(strSkill, Skill.class);
+        
+        System.out.println(sk.getNombre());
         
         Skill skill = new Skill(sk.getNombre(), sk.getPorcentaje());
         iskillService.save(skill);

@@ -1,28 +1,28 @@
 <div class="container-fluid">
     <br>
     <div class="row">
-        <div class="col-2">
+        <div class="col-xs-10 col-sm-10 col-md-4 col-lg-4">
             <h1>Experiencia</h1>
         </div>
-        <div class="col-1">
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
             <button class="btn btn-secondary" *ngIf="isLogged"><i class="bi bi-plus-square" (click)="modal.open(nuevo)"></i></button>
         </div>
         
     </div>
     <br>
         <div class="row"  *ngFor = "let exp of experiencia">
-            <div class="col-1">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                 <div id="contenedor">
-                    <img src="http://localhost:4200/photos/{{exp.img}}" id="logo">
+                    <img src="{{exp.img}}" id="logo">
                 </div>
             </div>
-            <div class="col-3">
-                <h4>{{exp.empleado}}</h4>
-                <h5>{{exp.empresa}}</h5>
-                <h6>{{exp.periodo}}</h6>
-                <h6>{{exp.descripcion}}</h6>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <h2>{{exp.empleado}}</h2>
+                <h3>{{exp.empresa}}</h3>
+                <h4>{{exp.periodo}}</h4>
+                <h4>{{exp.descripcion}}</h4>
             </div>
-            <div class="col-1">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <button class="btn btn-secondary" *ngIf="isLogged"
                 (click)="imprimirIndice(exp.id, 1); modal.open(editar)"><i class="bi bi-pencil-square"></i></button>
                 <br/><br/>
@@ -33,27 +33,27 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-2">
+            <div class="col-xs-10 col-sm-10 col-md-4 col-lg-4">
                 <h1>Educacion</h1>
             </div>
-            <div class="col-1">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                 <button class="btn btn-secondary" *ngIf="isLogged"><i class="bi bi-plus-square" (click)="modal.open(nuevoEdu)"></i></button>
             </div>
             
         </div>
         <br>
             <div class="row"  *ngFor = "let edu of educacion">
-                <div class="col-1">
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                     <div id="contenedor">
-                        <img src="http://localhost:4200/photos/{{edu.img}}" id="logo">
+                        <img src="{{edu.img}}" id="logo">
                     </div>
                 </div>
-                <div class="col-3">
-                    <h4>{{edu.titulo}}</h4>
-                    <h5>{{edu.institucion}}</h5>
-                    <h6>{{edu.periodo}}</h6>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <h2>{{edu.titulo}}</h2>
+                    <h3>{{edu.institucion}}</h3>
+                    <h4>{{edu.periodo}}</h4>
                 </div>
-                <div class="col-1">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <button class="btn btn-secondary" *ngIf="isLogged"
                     (click)="imprimirIndice(edu.id, 2); modal.open(editarEdu)"><i class="bi bi-pencil-square"></i></button>
                     <br/><br/>
@@ -62,6 +62,8 @@
                 </div>
                 <hr>
             </div>
+            <br>
+        
 </div>
 
 <ng-template #editar let-modal>
@@ -82,7 +84,7 @@
         <br>
         <input type="text" [(ngModel)]="experiencia[indice].periodo" placeholder="Periodo de trabajo" class="form-control" name="periodo" required>
         <br>
-        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        <input type="file"  [(ngModel)]="experiencia[indice].img" name="imagen" required class="file-input" (change)="onFileSelected($event,1)" #fileUpload accept=".jpg, .jpeg, .png">
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" (click)="onUpdate(1)" (click)="modal.close()">OK</button>
@@ -107,7 +109,7 @@
         <br>
         <input type="text" [(ngModel)]="periodo" placeholder="Periodo de trabajo" class="form-control" id="periodo" name="periodo" required>
         <br>
-        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event, 1)" #fileUpload accept=".jpg, .jpeg, .png">
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" (click)="create(1)" (click)="modal.close()">OK</button>
@@ -148,7 +150,7 @@
         <br>
         <input type="text" [(ngModel)]="educacion[indice].periodo" placeholder="Periodo" class="form-control" name="periodoEdu" required>
         <br>
-        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event,2)" #fileUpload>
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" (click)="onUpdate(2)" (click)="modal.close()">OK</button>
@@ -158,7 +160,7 @@
 <ng-template #nuevoEdu let-modal>
 
     <div class="modal-header">
-        <h4 class="modal-title">Nueva experiencia</h4>
+        <h4 class="modal-title">Nueva Educación</h4>
         <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -171,7 +173,7 @@
         <br>
         <input type="text" [(ngModel)]="periodoEdu" placeholder="Periodo" class="form-control" id="periodo" name="periodoEdu" required>
         <br>
-        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        <input type="file" name="imagen" required class="file-input" (change)="onFileSelected($event, 2)" #fileUpload accept=".jpg, .jpeg, .png">
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary" (click)="create(2)" (click)="modal.close()">OK</button>

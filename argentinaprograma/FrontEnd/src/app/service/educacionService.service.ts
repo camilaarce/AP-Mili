@@ -7,7 +7,7 @@ import { Educacion } from '../model/educacion';
   providedIn: 'root'
 })
 export class EducacionService {
-  expURL = 'http://localhost:8080/educacion/';
+  expURL = ' https://backendmili.herokuapp.com/educacion/';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,11 +19,11 @@ export class EducacionService {
     return this.httpClient.get<Educacion>(this.expURL + `detail/${id}`);
   } 
 
-  public save(educacion: FormData): Observable<any>{
+  public save(educacion: Educacion): Observable<any>{
     return this.httpClient.post<any>(this.expURL + 'create', educacion);
   }
 
-  public update(id: number, educacion: FormData): Observable<any>{
+  public update(id: number, educacion: Educacion): Observable<any>{
     return this.httpClient.put<any>(this.expURL + `update/${id}`, educacion);
   }
 

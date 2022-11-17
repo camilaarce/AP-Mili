@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <br>
     <div class="row">
-        <div class="col-4">
+        <div class="col-xs-10 col-sm-10 col-md-4 col-lg-4">
             <h1>Hard & Soft Skills</h1>
         </div>
         <div class="col-1">
@@ -11,10 +11,10 @@
     </div>
 
     <div class="row">
-        <div class="col-4" *ngFor = "let habilidad of skill">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngFor = "let habilidad of skill">
             <div class="row">
                 <div class="col-10">
-                    <h5> {{habilidad.nombre}} </h5>
+                    <h2> {{habilidad.nombre}} </h2>
                 </div>
                 <div class="col-1">
                     <button class="btn btn-secondary" *ngIf="isLogged"
@@ -49,7 +49,7 @@
 <ng-template #editar let-modal>
 
     <div class="modal-header">
-        <h4 class="modal-title">Editar habilidads</h4>
+        <h4 class="modal-title">Editar habilidades</h4>
         <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
             <span aria-hidden="true">&times;</span>
         </button>

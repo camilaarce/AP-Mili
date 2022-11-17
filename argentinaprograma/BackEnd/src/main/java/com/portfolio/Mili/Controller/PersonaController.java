@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://frontendmili.web.app")
 public class PersonaController {
     @Autowired ImpPersonaService ipersonaService;
     
@@ -39,7 +39,6 @@ public class PersonaController {
         return ipersonaService.getPersona();
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/personas/crear")
     public String createPersona(@RequestBody Persona persona){
         ipersonaService.savePersona(persona);
@@ -65,9 +64,24 @@ public class PersonaController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
     
+    @GetMapping("/photos")
+    public void mostrarFoto(){
+        
+    }
     //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/personas/editar/{id}")
-    public void editPersona(@PathVariable("id") int id,@RequestParam("persona") String strPersona, @RequestParam("fichero") MultipartFile multipartFile) throws IOException{
+        public void update(@PathVariable("id") int id,@RequestBody Persona persona) throws IOException{
+        
+        Persona per = ipersonaService.getOne(id).get();
+        
+        per.setNombre(persona.getNombre());
+        per.setPuesto(persona.getPuesto());
+        per.setImg(persona.getImg());
+        per.setDescripcion(persona.getDescripcion());
+        ipersonaService.savePersona(per);
+    }
+    
+    /*public void editPersona(@PathVariable("id") int id,@RequestParam("persona") String strPersona, @RequestParam("fichero") MultipartFile multipartFile) throws IOException{
         Persona per = ipersonaService.getOne(id).get();
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         //Establecemos el directorio donde se subiran nuestros ficheros  
@@ -106,7 +120,7 @@ public class PersonaController {
         
         ipersonaService.savePersona(per);
         //return new ResponseEntity(new Mensaje("Persona actualizada"), HttpStatus.OK);
-    }
+    }*/
     
     @GetMapping("/personas/traer/perfil")
     public Persona findPersona(){

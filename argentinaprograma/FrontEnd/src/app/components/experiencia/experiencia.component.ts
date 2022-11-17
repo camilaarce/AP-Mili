@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Educacion } from 'src/app/model/educacion';
 import { EducacionService } from 'src/app/service/educacionService.service';
+import { ImgService } from 'src/app/service/imgService.service';
 
 @Component({
   selector: 'app-experiencia',
@@ -30,7 +31,7 @@ export class ExperienciaComponent implements OnInit {
 
  indice: number;
 
-  constructor(private experienciaService: ExperienciaService, private educacionService: EducacionService, private tokenService: TokenService, public modal:NgbModal, private activatedRouter: ActivatedRoute, private httpClient: HttpClient) { }
+  constructor(private experienciaService: ExperienciaService, private educacionService: EducacionService, private tokenService: TokenService, public modal:NgbModal, private activatedRouter: ActivatedRoute, private httpClient: HttpClient, private imgService: ImgService) { }
 
   isLogged = false;
 
@@ -96,39 +97,55 @@ export class ExperienciaComponent implements OnInit {
   onUpdate(opc: number): void{
     if (opc == 1){
       this.expEditar = this.experiencia[this.indice];
-      this.formData.append("expEditar", JSON.stringify(this.expEditar));
-      this.experienciaService.update( this.experiencia[this.indice].id, this.formData).subscribe(data => {
+      this.expEditar.img = this.imgService.url;
+      console.log(this.expEditar)
+      this.experienciaService.update( this.experiencia[this.indice].id, this.expEditar).subscribe(data => {
           this.cargar();
       });
     } else {
       this.eduEditar = this.educacion[this.indice];
-      this.formData.append("eduEditar", JSON.stringify(this.eduEditar));
-      this.educacionService.update( this.educacion[this.indice].id, this.formData).subscribe(data => {
+      this.eduEditar.img = this.imgService.url;
+      console.log(this.eduEditar)
+      this.educacionService.update( this.educacion[this.indice].id, this.eduEditar).subscribe(data => {
           this.cargar();
       });
     }
   }
 
+  
   create(opc: number): void {
     if(opc == 1){
-      const expNueva = new Experiencia(this.empleado, this.empresa, this.periodo, this.descripcion, "")
-    this.formData.append("expNueva", JSON.stringify(expNueva));
-      this.experienciaService.save(this.formData).subscribe(data => {
+      const expNueva = new Experiencia(this.empleado, this.empresa, this.periodo, this.descripcion, this.imgService.url)
+      console.log(this.imgService.url)
+      this.experienciaService.save(expNueva).subscribe(data => {
           this.cargar();
       });
     } else {
-      const eduNueva = new Educacion(this.titulo, this.institucion, this.periodoEdu, "")
-    this.formData.append("eduNueva", JSON.stringify(eduNueva));
-      this.educacionService.save(this.formData).subscribe(data => {
+      console.log(this.imgService.url)
+      const eduNueva = new Educacion(this.titulo, this.institucion, this.periodoEdu, this.imgService.url)
+      this.educacionService.save(eduNueva).subscribe(data => {
           this.cargar();
       });
     }
     
+  
+
+  }
+ 
+  
+  onFileSelected($event:any, opc: number){
+    //const file:File = event.target.files[0];
+ 
+    //this.formData.append("fichero", file);
+    //const id = this.activatedRouter.snapshot.params['id'];
+    var name: string = null;
+    if (opc == 1){
+      name = "experiencia_" + this.empresa;
+    } else {
+      name = "educacion_" + this.institucion;
+    }
+    
+    this.imgService.uploadImage($event, name)
   }
 
-  onFileSelected(event:any){
-    const file:File = event.target.files[0];
- 
-    this.formData.append("fichero", file);
-  }
 }
